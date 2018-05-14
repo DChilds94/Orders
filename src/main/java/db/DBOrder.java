@@ -1,25 +1,24 @@
 package db;
 
 import models.Customer;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import models.Order;
+import org.hibernate.*;
 
 import java.util.List;
 
-public class DBCustomer {
+
+public class DBOrder {
 
     private static Session session;
     private static Transaction transaction;
 
-    public static void save(Customer customer){
+    public static void save(Order order) {
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            session.save(customer);
+            session.save(order);
             transaction.commit();
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             transaction.rollback();
             e.printStackTrace();
         } finally {
@@ -27,25 +26,24 @@ public class DBCustomer {
         }
     }
 
-    public static List<Customer> getCustomers() {
+    public static List<Order> getOrder(){
         session = HibernateUtil.getSessionFactory().openSession();
-        List<Customer> result = null;
+        List<Order> result = null;
         try {
-            String hql = "from Customer";
+            String hql = "from Order";
             result = session.createQuery(hql).list();
-        } catch (HibernateException e) {
+        }  catch (HibernateError e) {
             e.printStackTrace();
         } finally {
             session.close();
         }
         return result;
     }
-
-    public static void update(Customer customer){
+    public static void update(Order order){
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            session.update(customer);
+            session.update(order);
             transaction.commit();
         } catch (HibernateException e){
             transaction.rollback();
@@ -55,11 +53,11 @@ public class DBCustomer {
         }
     }
 
-    public static void delete(Customer customer){
+    public static void delete(Order order){
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            session.delete(customer);
+            session.delete(order);
             transaction.commit();
         } catch (HibernateException e){
             transaction.rollback();
@@ -69,14 +67,14 @@ public class DBCustomer {
         }
     }
 
-    public static Customer findById(int id){
+    public static Order findById(int id){
         session = HibernateUtil.getSessionFactory().openSession();
-        Customer result = null;
+        Order result = null;
         try {
-            String hql = "from Customer where id = :id";
+            String hql = "from Order where id = :id";
             Query query = session.createQuery(hql);
             query.setInteger("id", id);
-            result = (Customer) query.uniqueResult();
+            result = (Order) query.uniqueResult();
         } catch (HibernateException e) {
             e.printStackTrace();
         } finally {
@@ -84,5 +82,9 @@ public class DBCustomer {
         }
         return result;
     }
+
+
+
+
 
 }

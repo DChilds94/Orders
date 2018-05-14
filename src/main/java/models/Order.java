@@ -1,14 +1,17 @@
 package models;
 
-public class Orders {
+public class Order {
 
     private String item;
     private double price;
     private int id;
 
-    public Orders(String item, double price) {
+    public Order(String item, double price) {
         this.item = item;
         this.price = price;
+    }
+    public Order(){
+
     }
 
     public String getItem() {
